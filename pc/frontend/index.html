@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+    <h1 ng-repeat="ip in ips">{{ip}} <button ng-click="connect(ip)">Connect</button></h1>
+</div>
+
+<script>
+    var app = angular.module("myApp", []); 
+
+    app.config(['$qProvider', function ($qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
+}]);
+
+    app.controller("myCtrl", function($scope, $http, $window) {
+        $http.get("http://localhost:3000/search")
+            .then(function(response) {
+                console.log(response.data);
+                $scope.ips = response.data;
+        });
+        
+        $scope.connect = function(ip){
+            console.log(ip);
+            $http.post("http://localhost:3000/connect/"+ip)
+                .then(function(response){
+                    if(response.data.res!=undefined)
+                        $window.location.href = '/page.html';
+                });
+        }
+    });
+</script>
+
+</body>
+</html>
