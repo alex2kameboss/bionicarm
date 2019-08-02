@@ -1,3 +1,5 @@
+//calculeaza unghiul pentru fiecare deget folosind unghiul dintre palma si vectorul fiecarui deget, primul cod, folosind un api vechi, care nu avea clasa Bones
+
 var nmap = require('node-nmap');
 var cors = require('cors');
 const internalIp = require('internal-ip');
