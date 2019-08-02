@@ -1,47 +1,34 @@
 <!DOCTYPE html>
 <html lang="en-US">
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <title>Control</title>
 <body>
 
 <div ng-app="myApp" ng-controller="myCtrl">
-    <button ng-click = "tracking('true')">Start tracking</button>
-    <button ng-click = "tracking('false')">Stop tracking</button>
-    <h1>Servo pos</h1>
-    <button ng-click = "servo(0)">0</button><br>
-    <button ng-click = "servo(45)">45</button><br>
-    <button ng-click = "servo(135)">135</button><br>
-    <button ng-click = "servo(180)">180</button><br>
-
-    <h1>Servo poz : {{ser}}</h1>
+    <button ng-click = "tracking('true')" ng-hide="track == 'true'">Start tracking</button>
+    <button ng-click = "tracking('false')"ng-hide="track == 'false'">Stop tracking</button><br>
+    <hr>
+    <button ng-click = "close()">Close board</button>
 </div>
 
 <script>
     var app = angular.module("myApp", []); 
-
-    const socket = io('http://localhost:3000');
 
     app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
     app.controller("myCtrl", function($scope, $http, $window) {
-
-        $scope.ser = 90;
-
-        socket.on('newdata', (data) => {
-            console.log(data);
-            $scope.ser = data.servo;
-        });
-
+        $scope.track = 'false';
        $scope.tracking = function(val){
+            $scope.track = val;
            $http.post("http://localhost:3000/tracking/"+val)
                 .then(function(response){
                     console.log(response.data);
                 });
        }
-       $scope.servo = function(val){
-           $http.post("http://localhost:3000/add/"+val)
+       $scope.close = function(){
+           $http.post("http://localhost:3000/shutdown")
                 .then(function(response){
                     console.log(response.data);
                 });
