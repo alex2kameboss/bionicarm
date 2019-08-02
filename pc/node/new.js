@@ -1,3 +1,5 @@
+//calculeaza unghiul pentru degete folosind vectorul osului metacarpian si vectorul falangei intermediare
+
 var nmap = require('node-nmap');
 var cors = require('cors');
 const internalIp = require('internal-ip');
